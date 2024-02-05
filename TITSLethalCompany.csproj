@@ -43,11 +43,17 @@
     <Reference Include="Facepunch.Steamworks.Win64">
       <HintPath>libs\lethalcompany\Facepunch.Steamworks.Win64.dll</HintPath>
     </Reference>
+    <Reference Include="LC_API">
+      <HintPath>libs\LC_API.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Extensions.Logging.Abstractions">
       <HintPath>libs\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Security">
       <HintPath>libs\lethalcompany\Mono.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>libs\lethalcompany\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Unity.AI.Navigation">
       <HintPath>libs\lethalcompany\Unity.AI.Navigation.dll</HintPath>
