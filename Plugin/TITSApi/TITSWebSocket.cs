@@ -6,13 +6,14 @@ namespace TITSLethalCompany.TITSApi;
 
 public class TITSWebSocket
 {
-    private const string eventsWebSocketUri = "ws://localhost:42069/events"; // FIXME make port configurable
+    private static string eventsWebSocketUri => $"ws://localhost:{ConfigManager.Port}/events";
     private WebSocket? eventsClient;
     
     public async void ConnectWebSockets()
     {
+        // TODO reconnect logic
         Close();
-        eventsClient = new WebSocket(eventsWebSocketUri);
+        eventsClient = WebSocketFactory.CreateInstance(eventsWebSocketUri);
         eventsClient.OnOpen += () =>
         {
             Plugin.StaticLogger.LogInfo("TITS WebSocket Connected!");
