@@ -7,6 +7,8 @@ and damage the player.
 
 
 ## Setting up T.I.T.S
+Make sure that "T.I.T.S API" is enabled in T.I.T.S by going in the cogwheel in bottom-right and scrolling down.
+
 If you want items to spawn,
 you must import models into T.I.T.S with the exact same name as the item is in Lethal Company.
 You can find a collection of some pre-prepared items [here](https://github.com/3e849f2e5c/TITSLethalCompany/releases/download/v1.0.0/LethalCompanyModels.zip)
