@@ -1,7 +1,12 @@
-﻿# TITS Integration for Lethal Company
+﻿# T.I.T.S Integration for Lethal Company
 
 For regular users view the Thunderstore README [here](PackageSkeleton%2FREADME.md). Rest of this README is technical
 stuff.
+
+## Disclaimers
+T.I.T.S is paid software by Remasuri3 and must be bought from https://remasuri3.itch.io/tits to be able to use this mod.
+
+The project uses [NativeWebSocket](https://github.com/endel/NativeWebSocket) to connect to the T.I.T.S API websocket.
 
 ## Acquiring dependencies to compile the project
 
