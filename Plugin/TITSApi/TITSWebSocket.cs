@@ -16,24 +16,23 @@ public class TITSWebSocket
         eventsClient = WebSocketFactory.CreateInstance(eventsWebSocketUri);
         eventsClient.OnOpen += () =>
         {
-            Plugin.StaticLogger.LogInfo("TITS WebSocket Connected!");
+            Utils.LogInfo("TITS WebSocket Connected!");
         };
 
         eventsClient.OnError += e =>
         {
-            Plugin.StaticLogger.LogError($"TITS WebSocket Error: {e}");
+            Utils.LogError($"TITS WebSocket Error: {e}");
         };
 
         eventsClient.OnClose += e =>
         {
-            Plugin.StaticLogger.LogInfo($"TITS WebSocket Disconnected: {e}");
+            Utils.LogInfo($"TITS WebSocket Disconnected: {e}");
         };
 
         eventsClient.OnMessage += msg =>
         {
             var text = Encoding.UTF8.GetString(msg);
 
-            Plugin.StaticLogger.LogInfo($"{text}");
             TITSApiResponse response = JsonConvert.DeserializeObject<TITSApiResponse>(text);
 
             switch (response.messageType)
@@ -44,7 +43,7 @@ public class TITSWebSocket
                     break;
                 case nameof(TITSApiError):
                     var errorEvent = JsonConvert.DeserializeObject<TITSApiError>(text);
-                    Plugin.StaticLogger.LogError($"Received TITSAPIError: {errorEvent.data.message}");
+                    Utils.LogError($"Received TITSAPIError: {errorEvent.data.message}");
                     break;
             }
         };

@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
-using LC_API.Networking;
-using LC_API.Networking.Serializers;
 using TITSLethalCompany.Networking;
 using TITSLethalCompany.TITSApi;
 using Unity.Netcode;
@@ -15,26 +9,37 @@ using UnityEngine;
 
 namespace TITSLethalCompany
 {
-    [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
+    [BepInPlugin(PLUGIN_GUID, PLUGIN_NAME, PLUGIN_VERSION)]
     public class Plugin : BaseUnityPlugin
     {
+        public const string PLUGIN_NAME = "TITSLethalCompany";
+        private const string PLUGIN_GUID = "com.kosblue.TITSLethalCompany";
+        private const string PLUGIN_VERSION = "1.0.0";
+
+        public static Plugin? Instance;
         public static ManualLogSource StaticLogger = null!;
         private readonly TITSWebSocket webSocket = new();
 
         public static void OnItemHit(TITSHitResponseData data)
         {
             string itemName = data.itemName;
-            StaticLogger.LogInfo($"{PluginInfo.PLUGIN_NAME} {itemName}");
+            Utils.LogInfo($"Threw item: {itemName}");
+
+            bool itemFound = Utils.FindItemByName(itemName) is not null;
 
             if (GameNetworkManager.Instance is not { localPlayerController: { } controller }) { return; }
 
-            if (ConfigManager.ItemDamage > 0)
+            bool damagePlayer = itemFound || ConfigManager.DamageFromAnyItem;
+
+            if (ConfigManager.ItemDamage > 0 && damagePlayer)
             {
                 controller.DamagePlayer(ConfigManager.ItemDamage, true, true, CauseOfDeath.Mauling);
             }
 
-            if (!ConfigManager.SpawnItems) { return; }
-            NetworkHandler.NetSpawnItemOnPlayer(itemName, controller.transform.position, controller.isInElevator);
+            if (ConfigManager.SpawnItems && itemFound)
+            {
+                NetworkHandler.NetSpawnItemOnPlayer(itemName, controller.transform.position, controller.isInElevator);
+            }
         }
 
         public static void SpawnItemOnPlayer(string itemName, Vector3 pos, bool inElevator)
@@ -43,13 +48,11 @@ namespace TITSLethalCompany
                 ? StartOfRound.Instance.elevatorTransform
                 : StartOfRound.Instance.propsContainer;
 
-            List<Item>? itemList = StartOfRound.Instance.allItemsList.itemsList;
-            Item? matchingItem = itemList?.FirstOrDefault(item => item.itemName.Equals(itemName, StringComparison.OrdinalIgnoreCase));
+            Item? matchingItem = Utils.FindItemByName(itemName);
 
             if (matchingItem is null)
             {
-                StaticLogger.LogError($"No matching item found for {itemName}");
-                StaticLogger.LogError($"{string.Join(",", StartOfRound.Instance.allItemsList.itemsList.Select(item => item.itemName))}");
+                Utils.LogError($"No matching item found for {itemName}");
                 return;
             }
 
@@ -80,24 +83,9 @@ namespace TITSLethalCompany
             ConfigManager.LoadConfig();
             NetworkHandler.Register();
             StaticLogger = Logger;
-            TimeOfDayPatch.Plugin = this;
+            Instance = this;
             Logger.LogInfo($"{PluginInfo.PLUGIN_NAME} {PluginInfo.PLUGIN_VERSION} loaded");
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
         }
-    }
-
-    [HarmonyPatch(typeof(TimeOfDay))]
-    [SuppressMessage("ReSharper", "Unity.NoNullPropagation")]
-    public class TimeOfDayPatch
-    {
-        public static Plugin? Plugin;
-
-        [HarmonyPrefix, HarmonyPatch("Update")]
-        public static void Update(ref TimeOfDay __instance)
-            => Plugin?.TimeOfDayUpdate();
-
-        [HarmonyPrefix, HarmonyPatch("Awake")]
-        public static void Awake(ref TimeOfDay __instance)
-            => Plugin?.OnTimeOfDayAwake();
     }
 }
