@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace TITSLethalCompany.Networking;
 
-public static class LcApiNetworkHandler
+public static class NetworkHandler
 {
     private const string ItemHitNetworkMessage = "TITSItemHit";
     private const string FlashBangPullPinNetworkMessage = "TITSFlashBangPullPin";

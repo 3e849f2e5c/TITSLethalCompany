@@ -6,7 +6,7 @@ namespace TITSLethalCompany.TITSApi;
 
 public class TITSWebSocket
 {
-    private static string eventsWebSocketUri => $"ws://localhost:{ConfigManager.Port}/events";
+    private static string eventsWebSocketUri => $"ws://localhost:{ConfigManager.TITSPort}/events";
     private WebSocket? eventsClient;
     
     public async void ConnectWebSockets()
@@ -38,11 +38,11 @@ public class TITSWebSocket
 
             switch (response.messageType)
             {
-                case "TITSHitEvent":
+                case nameof(TITSHitEvent):
                     var hitEvent = JsonConvert.DeserializeObject<TITSHitEvent>(text);
                     Plugin.OnItemHit(hitEvent.data);
                     break;
-                case "APIError":
+                case nameof(TITSApiError):
                     var errorEvent = JsonConvert.DeserializeObject<TITSApiError>(text);
                     Plugin.StaticLogger.LogError($"Received TITSAPIError: {errorEvent.data.message}");
                     break;

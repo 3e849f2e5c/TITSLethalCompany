@@ -7,9 +7,10 @@ namespace TITSLethalCompany;
 
 public static class ConfigManager
 {
-    public static string Port = "42069";
+    public static string TITSPort = "42069";
     public static int ItemDamage = 10;
-    public static bool PullPinOnFlashBang = true;
+    public static bool PullPinOnStunGrenade = true;
+    public static bool SpawnItems = true;
 
     private static readonly string configPath = Path.Combine(Paths.ConfigPath, "TITSLethalCompany.cfg");
     private static ConfigFile? configFile;
@@ -19,9 +20,10 @@ public static class ConfigManager
         EnsureConfigExists();
         if (configFile is null) { return; }
 
-        Port = GetConfigValue("TITSPort", Port, "What port to use for TITS API.");
-        ItemDamage = GetConfigValue("ItemDamage", ItemDamage, "How much damage should throwing items deal to the player.");
-        //PullPinOnFlashBang = GetConfigValue("PullPinOnFlashBang", true, "If a flashbang is thrown at the player should the pin be automatically pulled.");
+        TITSPort = GetConfigValue(nameof(TITSPort), TITSPort, "What port to use for TITS API.");
+        ItemDamage = GetConfigValue(nameof(ItemDamage), ItemDamage, "How much damage should throwing items deal to the player. Set to 0 or lower to disable damage.");
+        SpawnItems = GetConfigValue(nameof(SpawnItems), true, "Set to false to disable spawning items completely.");
+        PullPinOnStunGrenade = GetConfigValue(nameof(PullPinOnStunGrenade), true, "If a stun grenade is thrown at the player should the pin be automatically pulled.");
         return;
 
         static T GetConfigValue<T>(string key, T defaultValue, string? description = null)

@@ -30,17 +30,11 @@ namespace TITSLethalCompany
 
             if (ConfigManager.ItemDamage > 0)
             {
-                try
-                {
-                    controller.DamagePlayer(ConfigManager.ItemDamage, true, true, CauseOfDeath.Mauling);
-                }
-                catch (Exception e)
-                {
-                    StaticLogger.LogError(e);
-                }
+                controller.DamagePlayer(ConfigManager.ItemDamage, true, true, CauseOfDeath.Mauling);
             }
 
-            LcApiNetworkHandler.NetSpawnItemOnPlayer(itemName, controller.transform.position, controller.isInElevator);
+            if (!ConfigManager.SpawnItems) { return; }
+            NetworkHandler.NetSpawnItemOnPlayer(itemName, controller.transform.position, controller.isInElevator);
         }
 
         public static void SpawnItemOnPlayer(string itemName, Vector3 pos, bool inElevator)
@@ -69,9 +63,9 @@ namespace TITSLethalCompany
 
             go.GetComponent<NetworkObject>()?.Spawn();
 
-            if (ConfigManager.PullPinOnFlashBang && go.GetComponent<StunGrenadeItem>() is { } stunGrenadeItem)
+            if (ConfigManager.PullPinOnStunGrenade && go.GetComponent<StunGrenadeItem>() is { } stunGrenadeItem)
             {
-                LcApiNetworkHandler.NetPullStunGrenadePin(stunGrenadeItem);
+                NetworkHandler.NetPullStunGrenadePin(stunGrenadeItem);
             }
         }
 
@@ -84,7 +78,7 @@ namespace TITSLethalCompany
         public void Awake()
         {
             ConfigManager.LoadConfig();
-            LcApiNetworkHandler.Register();
+            NetworkHandler.Register();
             StaticLogger = Logger;
             TimeOfDayPatch.Plugin = this;
             Logger.LogInfo($"{PluginInfo.PLUGIN_NAME} {PluginInfo.PLUGIN_VERSION} loaded");
