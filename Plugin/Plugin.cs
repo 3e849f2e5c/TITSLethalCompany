@@ -84,7 +84,7 @@ namespace TITSLethalCompany
             NetworkHandler.Register();
             StaticLogger = Logger;
             Instance = this;
-            Logger.LogInfo($"{PluginInfo.PLUGIN_NAME} {PluginInfo.PLUGIN_VERSION} loaded");
+            Logger.LogInfo($"{PLUGIN_NAME} {PLUGIN_VERSION} loaded");
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
         }
     }
