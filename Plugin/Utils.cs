@@ -26,8 +26,8 @@ public static class Utils
     }
     
     public static void LogInfo(string msg)
-        => Plugin.StaticLogger.LogInfo($"{Plugin.PLUGIN_NAME}: {msg}");
+        => Plugin.StaticLogger.LogInfo($"{PluginInfo.PLUGIN_NAME}: {msg}");
     
     public static void LogError(string msg)
-        => Plugin.StaticLogger.LogError($"{Plugin.PLUGIN_NAME}: {msg}");
+        => Plugin.StaticLogger.LogError($"{PluginInfo.PLUGIN_NAME}: {msg}");
 }

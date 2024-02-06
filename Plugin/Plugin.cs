@@ -9,13 +9,9 @@ using UnityEngine;
 
 namespace TITSLethalCompany
 {
-    [BepInPlugin(PLUGIN_GUID, PLUGIN_NAME, PLUGIN_VERSION)]
+    [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
     public class Plugin : BaseUnityPlugin
     {
-        public const string PLUGIN_NAME = "TITSLethalCompany";
-        private const string PLUGIN_GUID = "com.kosblue.TITSLethalCompany";
-        private const string PLUGIN_VERSION = "1.0.0";
-
         public static Plugin? Instance;
         public static ManualLogSource StaticLogger = null!;
         private readonly TITSWebSocket webSocket = new();
@@ -84,7 +80,7 @@ namespace TITSLethalCompany
             NetworkHandler.Register();
             StaticLogger = Logger;
             Instance = this;
-            Logger.LogInfo($"{PLUGIN_NAME} {PLUGIN_VERSION} loaded");
+            Logger.LogInfo($"{PluginInfo.PLUGIN_NAME} {PluginInfo.PLUGIN_VERSION} loaded");
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
         }
     }

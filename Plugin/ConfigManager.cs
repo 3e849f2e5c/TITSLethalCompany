@@ -24,7 +24,7 @@ public static class ConfigManager
         ItemDamage = GetConfigValue(nameof(ItemDamage), ItemDamage, "How much damage should throwing items deal to the player. Set to 0 or lower to disable damage.");
         SpawnItems = GetConfigValue(nameof(SpawnItems), SpawnItems, "Set to false to disable spawning items completely.");
         PullPinOnStunGrenade = GetConfigValue(nameof(PullPinOnStunGrenade), PullPinOnStunGrenade, "If a stun grenade is thrown at the player should the pin be automatically pulled.");
-        DamageFromAnyItem = GetConfigValue(nameof(DamageFromAnyItem), DamageFromAnyItem, "When set to false the damage will only be applied if the thrown item is a recognized Lethal Company item, set to false for all thrown items to cause damage.");
+        DamageFromAnyItem = GetConfigValue(nameof(DamageFromAnyItem), DamageFromAnyItem, "When set to false the damage will only be applied if the thrown item is a recognized Lethal Company item, set to true for all thrown items to cause damage.");
         return;
 
         static T GetConfigValue<T>(string key, T defaultValue, string? description = null)

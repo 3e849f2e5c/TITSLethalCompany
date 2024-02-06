@@ -1,4 +1,4 @@
-﻿# T.I.T.S Integration
+# T.I.T.S Integration
 https://youtu.be/GBXJCBUrGvs
 
 A mod for Lethal Company
